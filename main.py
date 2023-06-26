@@ -2,6 +2,13 @@ import argparse
 from utils.dataaugmentation import Data_Augmentation
 from utils import datavisualization
 
+### Folders
+# images
+#
+#
+#
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(

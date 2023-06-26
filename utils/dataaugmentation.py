@@ -17,19 +17,23 @@ class Data_Augmentation:
 
     def load_data(self, IMAGE_FOLDER, LABEL_FOLDER):
         IMAGE_DIRS = glob.glob(os.path.join(IMAGE_FOLDER, "*"))
-        # LABEL_DIRS = glob.glob(os.path.join(IMAGE_FOLDER,"*."+label_extension))
-        for IMAGE_DIR in IMAGE_DIRS:
-            data = {}
-            img_name = IMAGE_DIR.split("/")[-1].split(".")[0]
-            if (os.path.exists(os.path.join(LABEL_FOLDER, img_name+".txt"))):
+        LABEL_DIRS = glob.glob(os.path.join(LABEL_FOLDER,"*"))
+        x=0       
+         
+        for IMAGE_DIR in IMAGE_DIRS:       
+            data = {}                 
+            
+            if (os.path.exists(LABEL_DIRS[x])): 
+                print(LABEL_DIRS[x])            
                 data["image"] = cv2.cvtColor(cv2.imread(IMAGE_DIR),cv2.COLOR_BGR2RGB)
-                data["bounding_boxes"] = self.load_label(
-                    os.path.join(LABEL_FOLDER, img_name+".txt"))
+                data["bounding_boxes"] = self.load_label(LABEL_DIRS[x])
             self.dataset.append(data)
+            x+=1
+            
 
     def load_label(self, DIR):
         labels = []
-        with open(DIR) as f:
+        with open(file=DIR) as f:
             for line in f:
                 data_inline = line.split(" ")
                 label = {
@@ -43,6 +47,9 @@ class Data_Augmentation:
         return labels
 
     def run(self, n_processing=2):
+        
+        #print(self.dataset)
+        
         operations = [
             self.noise,
             self.translation,
